@@ -12,7 +12,7 @@ export interface PostModel {
   commentCount: number;
 }
 
-let posts: PostModel[] = [
+const posts: PostModel[] = [
   {
     id: 1,
     author: 'newjeans_official',
@@ -92,13 +92,13 @@ export class PostsService {
     return await this.postsRepository.save(post);
   }
 
-  deletePost(id: number) {
-    const post = posts.find((post) => post.id === Number(id));
+  async deletePost(id: number) {
+    const post = await this.postsRepository.findOne({ where: { id } });
     if (!post) {
       throw new NotFoundException(`데이터가 존재하지 않습니다.(${id})`);
     }
 
-    posts = posts.filter((post) => post.id !== Number(id));
+    await this.postsRepository.delete(id);
     return id;
   }
 }
