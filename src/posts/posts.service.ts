@@ -71,10 +71,10 @@ export class PostsService {
     return await this.postsRepository.save(post);
   }
 
-  updatePost(postId: number, author: string, title: string, content: string) {
-    const post = posts.find((post) => post.id === postId);
+  async updatePost(id: number, author: string, title: string, content: string) {
+    const post = await this.postsRepository.findOne({ where: { id } });
     if (!post) {
-      throw new NotFoundException(`데이터가 존재하지 않습니다.(${postId})`);
+      throw new NotFoundException(`데이터가 존재하지 않습니다.(${id})`);
     }
 
     if (author) {
@@ -89,8 +89,7 @@ export class PostsService {
       post.content = content;
     }
 
-    posts.map((prevPost) => (prevPost.id === postId ? post : prevPost));
-    return posts;
+    return await this.postsRepository.save(post);
   }
 
   deletePost(id: number) {
