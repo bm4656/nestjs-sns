@@ -46,12 +46,13 @@ export class PostsService {
     private readonly postsRepository: Repository<PostsModel>,
   ) {}
 
-  getAllPosts() {
-    return posts;
+  async getAllPosts() {
+    return this.postsRepository.find();
   }
 
-  getPostById(id: number) {
-    const post = posts.find((post) => post.id === id);
+  async getPostById(id: number) {
+    const post = await this.postsRepository.findOne({ where: { id } });
+
     if (!post) {
       throw new NotFoundException(`데이터가 존재하지 않습니다.(${id})`);
     }
