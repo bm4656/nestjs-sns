@@ -23,9 +23,11 @@ export class PostsService {
     return post;
   }
 
-  async createPost(author: string, title: string, content: string) {
+  async createPost(authorId: number, title: string, content: string) {
     const post = this.postsRepository.create({
-      author,
+      author: {
+        id: authorId,
+      },
       title,
       content,
       likeCount: 0,
@@ -35,14 +37,10 @@ export class PostsService {
     return await this.postsRepository.save(post);
   }
 
-  async updatePost(id: number, author: string, title: string, content: string) {
+  async updatePost(id: number, title: string, content: string) {
     const post = await this.postsRepository.findOne({ where: { id } });
     if (!post) {
       throw new NotFoundException(`데이터가 존재하지 않습니다.(${id})`);
-    }
-
-    if (author) {
-      post.author = author;
     }
 
     if (title) {
