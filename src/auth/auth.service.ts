@@ -86,7 +86,7 @@ export class AuthService {
      * 1) 입력된 비밀번호
      * 2) 기존 해시(hash) -> 사용자 정보에 저장되어잇는 hash
      */
-    const passOk = await bcrypt.comfare(user.password, existingUser.password);
+    const passOk = await bcrypt.compare(user.password, existingUser.password);
 
     if (!passOk) {
       throw new UnauthorizedException('비밀번호가 틀렸습니다.');
@@ -109,7 +109,10 @@ export class AuthService {
     // salt는 자동 생성된다.
     const hash = await bcrypt.hash(user.password, HASH_ROUNDS);
 
-    const newUser = await this.usersService.createUser(user);
+    const newUser = await this.usersService.createUser({
+      ...user,
+      password: hash,
+    });
 
     return this.loginUser(newUser);
   }
