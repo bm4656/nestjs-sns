@@ -13,6 +13,25 @@ export class AuthService {
   ) {}
 
   /**
+   * Header로부터 토큰을 받을 때
+   * Basic과 Bearer를 구분해 토큰을 추출해내는 로직
+   *
+   * {authorization: ‘Basic {token}’}
+   * {authorization: ‘Bearer {token}’}
+   */
+  async extractTokenFromHeader(header: string, isBearer: boolean) {
+    const splitToken = header.split(' ');
+
+    const prefix = isBearer ? 'Bearer' : 'Basic';
+
+    if (splitToken.length !== 2 || splitToken[0] !== prefix) {
+      throw new UnauthorizedException('잘못된 토큰입니다!');
+    }
+
+    return splitToken[1];
+  }
+
+  /**
    * 우리가 만드려는 기능
    *
    * 1) registerWithEmail
