@@ -12,6 +12,7 @@ import {
 import { PostsService } from './posts.service';
 import { AccessTokenGuard } from '../auth/guard/bearer-token.guard';
 import { User } from '../users/decorator/user.decorator';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -32,13 +33,8 @@ export class PostsController {
   // 3. POST /posts -> 새로운 포스트를 생성한다.
   @Post()
   @UseGuards(AccessTokenGuard)
-  postPosts(
-    @User('id') userId: number,
-    @Body('title') title: string,
-    @Body('content') content: string,
-  ) {
-    const authorId = userId;
-    return this.postsService.createPost(authorId, title, content);
+  postPosts(@User('id') userId: number, @Body() body: CreatePostDto) {
+    return this.postsService.createPost(userId, body);
   }
 
   // 4. PUT /posts/:id -> id에 해당하는 포스트를 수정한다.

@@ -32,7 +32,7 @@ export class BearerTokenGuard implements CanActivate {
      *  2) token - token
      *  3) tokenType - access | refresh
      */
-    const user = this.usersService.getUserByEmail(result.email);
+    const user = await this.usersService.getUserByEmail(result.email);
 
     request.user = user;
     request.token = token;

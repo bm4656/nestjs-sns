@@ -65,7 +65,7 @@ export class AuthService {
         secret: JWT_SECRET,
       });
     } catch (e) {
-      throw new UnauthorizedException('토큰이; 만료됐거나 잘못된 토큰입니다.');
+      throw new UnauthorizedException('토큰이 만료됐거나 잘못된 토큰입니다.');
     }
   }
 
