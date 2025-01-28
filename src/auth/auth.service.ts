@@ -4,6 +4,7 @@ import { UsersModel } from '../users/entities/users.entity';
 import { HASH_ROUNDS, JWT_SECRET } from './const/auth.const';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -186,9 +187,7 @@ export class AuthService {
     return this.loginUser(existingUser);
   }
 
-  async registerWithEmail(
-    user: Pick<UsersModel, 'nickname' | 'email' | 'password'>,
-  ) {
+  async registerWithEmail(user: RegisterUserDto) {
     // 첫 번째 파라미터로 해싱할 비밀번호, 두 번째 파라미터로 해시 라운드를 넣어준다.
     // 해시 라운드: 라운드를 많이 돌릴 수록 해시를 만드는 시간이 오래 걸린다. -> 서버를 좋은 거 써야함
     // salt는 자동 생성된다.
