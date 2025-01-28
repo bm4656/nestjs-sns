@@ -4,6 +4,9 @@ import { PostsModel } from '../../posts/entities/posts.entity';
 import { BaseModel } from '../../common/entities/base.entity';
 import { IsEmail, IsString, Length } from 'class-validator';
 import { lengthValidationMessage } from '../../common/validation-message/length-validation.message';
+import { stringValidationMessage } from '../../common/validation-message/string-validation.message';
+import { emailValidationMessage } from '../../common/validation-message/email-validation.message';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class UsersModel extends BaseModel {
@@ -13,24 +16,21 @@ export class UsersModel extends BaseModel {
     // 2) 유일무이한 값이 될 것
     unique: true,
   })
-  @IsString()
-  @Length(1, 20, {
-    message: lengthValidationMessage,
-  })
+  @IsString({ message: stringValidationMessage })
+  @Length(1, 20, { message: lengthValidationMessage })
   nickname: string;
 
   @Column({
     unique: true,
   })
-  @IsString()
-  @IsEmail()
+  @IsString({ message: stringValidationMessage })
+  @IsEmail({}, { message: emailValidationMessage })
   email: string;
 
   @Column()
-  @IsString()
-  @Length(3, 8, {
-    message: lengthValidationMessage,
-  })
+  @IsString({ message: stringValidationMessage })
+  @Length(3, 8, { message: lengthValidationMessage })
+  @Exclude()
   password: string;
 
   @Column({
