@@ -30,7 +30,22 @@ export class UsersModel extends BaseModel {
   @Column()
   @IsString({ message: stringValidationMessage })
   @Length(3, 8, { message: lengthValidationMessage })
-  @Exclude()
+  /**
+   * Request
+   * frontend -> backend
+   * plain object (JSON) -> class instance (dto)
+   *
+   * Response
+   * backend -> frontend
+   * class instance (dto) -> plain object (JSON)
+   *
+   * toClassOnly
+   * - class instance 변환될때만 → 요청
+   *
+   * toPlainOnly
+   * - plain object 변환될때만 → 응답
+   */
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @Column({
