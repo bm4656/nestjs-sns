@@ -3,6 +3,7 @@ import { RolesEnum } from '../const/roles.enum';
 import { PostsModel } from '../../posts/entities/posts.entity';
 import { BaseModel } from '../../common/entities/base.entity';
 import { IsEmail, IsString, Length } from 'class-validator';
+import { lengthValidationMessage } from '../../common/validation-message/length-validation.message';
 
 @Entity()
 export class UsersModel extends BaseModel {
@@ -13,7 +14,9 @@ export class UsersModel extends BaseModel {
     unique: true,
   })
   @IsString()
-  @Length(1, 20, { message: '닉네임은 1~20자 사이로 입력해주세요.' })
+  @Length(1, 20, {
+    message: lengthValidationMessage,
+  })
   nickname: string;
 
   @Column({
@@ -25,7 +28,9 @@ export class UsersModel extends BaseModel {
 
   @Column()
   @IsString()
-  @Length(3, 8)
+  @Length(3, 8, {
+    message: lengthValidationMessage,
+  })
   password: string;
 
   @Column({
